@@ -10,6 +10,7 @@ React Native : Le guide du débutant (Édition 2023)
 
 Full stack developer / Dev teacher in Engineer school
 
-### What I learned
+### What I did
 
-- How to have a safe area view to prevent default device icons overlap with "react-native-safe-area-context"
+- I created a safe area view to prevent default device icons overlap with "react-native-safe-area-context"
+- I determined the layout of the components
