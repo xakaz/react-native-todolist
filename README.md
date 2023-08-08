@@ -15,6 +15,8 @@ Full stack developer / Dev teacher in Engineer school
 - Creation of a safe area view to prevent default device icons overlap with "react-native-safe-area-context"
 - Creation of the layout of the components
 - Using the ScrollView hook from react-native
-- Adding list items as button
+- Adding list items as buttons
 - Making them checkable
 - Creation of sorted lists using filter method from Javascript
+- Using onLongPress to display a menu to delete todo item
+- Adding ADD button to add task

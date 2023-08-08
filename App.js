@@ -1,20 +1,23 @@
-import { Alert, ScrollView, Text, View } from "react-native";
+import { Alert, ScrollView, View } from "react-native";
 import { s } from "./App.style";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "./Components/Header/Header";
 import { CardTodo } from "./Components/CardTodo/CardTodo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TabBottomMenu from "./Components/TabBottomMenu/TabBottomMenu";
+import { ButtonAdd } from "./Components/ButtonAdd/ButtonAdd";
+import Dialog from "react-native-dialog";
+import uuid from "react-native-uuid";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+let isFirstRender = true;
+let isLoadUpdate = false;
 
 export default function App() {
   const [selectedTabName, setSelectedTabName] = useState("all");
-
-  const [todoList, setTodoList] = useState([
-    { id: 1, title: "Sortir le chien", isCompleted: true },
-    { id: 2, title: "Aller chez le garagiste", isCompleted: false },
-    { id: 3, title: "Faire les courses", isCompleted: true },
-    { id: 4, title: "Appeler le vétérinaire", isCompleted: true },
-  ]);
+  const [isAddDialogVisible, setIsAddDialogVisible] = useState(false);
+  const [todoList, setTodoList] = useState([]);
+  const [inputValue, setInputValue] = useState("");
 
   function getFilteredList() {
     switch (selectedTabName) {
@@ -36,7 +39,7 @@ export default function App() {
           const updatedTodoList = todoList.filter(
             (todo) => todo.id !== todoToDelete.id
           );
-          setTodoList(updatedTodoList)
+          setTodoList(updatedTodoList);
         },
       },
       { text: "Annuler", style: "cancel" },
@@ -68,6 +71,58 @@ export default function App() {
     setTodoList(updatedTodoList);
   }
 
+  function showAddDialog() {
+    setIsAddDialogVisible(true);
+  }
+
+  function addTodo() {
+    const newTodo = {
+      id: uuid.v4(),
+      title: inputValue,
+      isCompleted: false,
+    };
+
+    setTodoList([...todoList, newTodo]);
+    setIsAddDialogVisible(false);
+  }
+
+  async function saveTodoList() {
+    try {
+      await AsyncStorage.setItem("@todoList", JSON.stringify(todoList));
+    } catch (error) {
+      Alert.alert("Erreur" + error);
+    }
+  }
+
+  async function loadTodoList() {
+    try {
+      const stringifiedTodoList = await AsyncStorage.getItem("@todoList");
+      if (stringifiedTodoList !== null) {
+        const parsedTodoList = JSON.parse(stringifiedTodoList);
+        isLoadUpdate = true;
+        setTodoList(parsedTodoList);
+      }
+    } catch (error) {
+      Alert.alert("Erreur" + error);
+    }
+  }
+
+  useEffect(() => {
+    loadTodoList();
+  }, []);
+
+  useEffect(() => {
+    if (isLoadUpdate) {
+      isLoadUpdate = false;
+    } else {
+      if (!isFirstRender) {
+        saveTodoList();
+      } else {
+        isFirstRender = false;
+      }
+    }
+  }, [todoList]);
+
   return (
     <>
       <SafeAreaProvider>
@@ -78,15 +133,31 @@ export default function App() {
           <View style={s.body}>
             <ScrollView>{renderTodoList()}</ScrollView>
           </View>
+          <ButtonAdd onPress={showAddDialog} />
         </SafeAreaView>
       </SafeAreaProvider>
-      <View style={s.footer}>
-        <TabBottomMenu
-          todoList={todoList}
-          selectedTabName={selectedTabName}
-          onPress={setSelectedTabName}
+      <TabBottomMenu
+        todoList={todoList}
+        selectedTabName={selectedTabName}
+        onPress={setSelectedTabName}
+      />
+      <Dialog.Container
+        visible={isAddDialogVisible}
+        onBackdropPress={() => {
+          setIsAddDialogVisible(false);
+        }}
+      >
+        <Dialog.Title>Créer une tâche</Dialog.Title>
+        <Dialog.Description>
+          Choisis un nom pour la nouvelle tâche
+        </Dialog.Description>
+        <Dialog.Input onChangeText={setInputValue} />
+        <Dialog.Button
+          disabled={inputValue.trim().length === 0}
+          label="Créer"
+          onPress={addTodo}
         />
-      </View>
+      </Dialog.Container>
     </>
   );
 }

@@ -4,8 +4,15 @@ export const s = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    paddingVertical: 20,
-    borderTopColor: "#e9e9e9",
-    borderTopWidth:1
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 9,
+    },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,
+    
+    elevation: 18,
   },
 });
