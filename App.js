@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
 import { s } from "./App.style";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import Header from "./Components/Header/Header";
 
 export default function App() {
   return (
@@ -8,7 +9,7 @@ export default function App() {
       <SafeAreaProvider>
         <SafeAreaView style={s.container}>
           <View style={s.header}>
-            <Text>header</Text>
+            <Header/>
           </View>
           <View style={s.body}>
             <Text>body</Text>
