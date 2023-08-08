@@ -20,3 +20,4 @@ Full stack developer / Dev teacher in Engineer school
 - Creation of sorted lists using filter method from Javascript
 - Using onLongPress to display a menu to delete todo item
 - Adding ADD button to add task
+- Adding Local Storage with react native async storage : npx expo install @react-native-async-storage/async-storage   
