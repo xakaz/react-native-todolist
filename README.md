@@ -12,6 +12,9 @@ Full stack developer / Dev teacher in Engineer school
 
 ### What I did
 
-- I created a safe area view to prevent default device icons overlap with "react-native-safe-area-context"
-- I determined the layout of the components
-- I used the ScrollView hook from react-native
+- Creation of a safe area view to prevent default device icons overlap with "react-native-safe-area-context"
+- Creation of the layout of the components
+- Using the ScrollView hook from react-native
+- Adding list items as button
+- Making them checkable
+- Creation of sorted lists using filter method from Javascript
