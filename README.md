@@ -14,3 +14,4 @@ Full stack developer / Dev teacher in Engineer school
 
 - I created a safe area view to prevent default device icons overlap with "react-native-safe-area-context"
 - I determined the layout of the components
+- I used the ScrollView hook from react-native
